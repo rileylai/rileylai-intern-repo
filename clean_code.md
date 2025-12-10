@@ -4,35 +4,40 @@ This document explains core clean code principles and why they matter in real-wo
 
 ---
 
-## 1. Simplicity  
+## 1. Simplicity
+
 Simplicity means writing code that is easy to understand and easy to change.  
 Simple code focuses on solving the problem directly, without unnecessary steps.  
 When code is simple, developers can work faster and make fewer mistakes.
 
 ---
 
-## 2. Readability  
+## 2. Readability
+
 Readable code is code that can be understood quickly, even by someone who did not write it.  
 Good readability includes clear naming, good formatting, and logical structure.  
 If code is readable, it reduces confusion, speeds up development, and improves teamwork.
 
 ---
 
-## 3. Maintainability  
+## 3. Maintainability
+
 Maintainable code should be easy to update or fix.  
 Future developers (including myself) should be able to understand what the code does without guessing.  
 Clean structure, small functions, and clear comments make the code easier to maintain over time.
 
 ---
 
-## 4. Consistency  
+## 4. Consistency
+
 Consistency means following the same style, patterns, and conventions across the whole project.  
 When every file looks and feels the same, it becomes easier to navigate and reason about the code.  
 Teams often use style guides (like Airbnb for JavaScript) to keep code consistent.
 
 ---
 
-## 5. Efficiency  
+## 5. Efficiency
+
 Efficient code performs well without unnecessary work.  
 However, clean code avoids premature optimization.  
 First make it correct and readable, then optimise only when needed.
@@ -42,13 +47,22 @@ First make it correct and readable, then optimise only when needed.
 # Example of Messy Code
 
 ```js
-function c(a,b){let x=0;for(let i=0;i<a.length;i++){if(a[i]==b){x++}}return x}
+function c(a, b) {
+  let x = 0;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] == b) {
+      x++;
+    }
+  }
+  return x;
+}
 ```
 
 ### Why this code is difficult to read:
-- The function name `c` is not meaningful.  
-- The variable `x` does not say what it represents.  
-- There are no spaces or formatting to help readability.  
+
+- The function name `c` is not meaningful.
+- The variable `x` does not say what it represents.
+- There are no spaces or formatting to help readability.
 - The purpose of the function is not clear at first glance.
 
 ---
@@ -71,12 +85,937 @@ function countOccurrences(array, target) {
 ```
 
 ### Why the clean version is better:
-- Clear function name that explains its purpose.  
-- Meaningful variable names (`count`, `array`, `target`).  
-- Proper formatting and spacing.  
-- A comment explains the function at a high level.  
+
+- Clear function name that explains its purpose.
+- Meaningful variable names (`count`, `array`, `target`).
+- Proper formatting and spacing.
+- A comment explains the function at a high level.
 - Easy for any developer to read and update.
 
 ---
 
 I learned that clean code is not just about writing code that works, but writing code that will still be easy to understand months or years later.
+
+---
+
+# 🧹 Code Formatting & Style Guides
+
+This section explains why consistent formatting matters and what I learned from using linters and formatters.
+
+---
+
+## 1. Why is code formatting important?
+
+Code formatting is important because it keeps the project clean and easy to understand.  
+When all files follow the same style, developers do not waste time trying to interpret different patterns.  
+Good formatting also prevents small mistakes and makes the codebase more professional and readable.
+
+Consistent formatting improves teamwork because everyone writes code in the same way.
+
+---
+
+## 2. What issues did the linter detect?
+
+After installing **ESLint** and **Prettier**, the linter detected issues such as:
+
+- missing semicolons
+- inconsistent spacing
+- unused variables
+- wrong quote style (single vs double)
+- long lines that needed formatting
+- functions that did not follow the style guide
+
+These showed me how easy it is to create small problems without noticing.
+
+---
+
+## 3. Did formatting the code make it easier to read?
+
+Yes, formatting made the code much cleaner and easier to follow.  
+Spacing became consistent, indentation improved, and long lines were wrapped.  
+The logic was easier to understand because everything was aligned and predictable.
+
+It also saved me time because I did not need to worry about formatting manually — the tools handled it for me.
+
+---
+
+---
+
+# Clean Code: Variable & Function Best Practices
+
+(Notes inspired by the Airbnb JavaScript Style Guide)
+
+This section summarizes practical rules for writing cleaner variables and functions. These rules help avoid bugs, improve readability, and make code easier for teams to maintain.
+
+---
+
+# 🧩 1. Variables
+
+## 1.1 Always use `const` or `let`
+
+Declaring variables without `const` or `let` creates unwanted global variables.  
+Using `const` or `let` keeps your code safer and avoids polluting the global scope.
+
+**Bad**
+
+```js
+superPower = new SuperPower();
+```
+
+**Good**
+
+```js
+const superPower = new SuperPower();
+```
+
+---
+
+## 1.2 Use one declaration per line
+
+This prevents punctuation mistakes and makes debugging easier.
+
+**Bad**
+
+```js
+const a = 1,
+  b = 2,
+  c = 3;
+```
+
+**Good**
+
+```js
+const a = 1;
+const b = 2;
+const c = 3;
+```
+
+---
+
+## 1.3 Group all `const` first, then `let`
+
+This helps when later variables depend on earlier ones.
+
+---
+
+## 1.4 Declare variables close to where they are used
+
+Since `let`/`const` are block-scoped, this improves clarity and avoids confusion.
+
+---
+
+## 1.5 Do not chain assignments
+
+Chained assignments can accidentally create global variables.
+
+---
+
+## 1.6 Avoid using `++` and `--`
+
+They may cause silent bugs. Use `+= 1` or array helpers instead.
+
+---
+
+## 1.7 Do not break lines before or after `=`
+
+If the line is too long, wrap the value in parentheses.
+
+---
+
+## 1.8 Remove unused variables
+
+Unused variables usually mean the code was not fully refactored.
+
+---
+
+# 🧩 2. Functions
+
+## 2.1 Use **named function expressions**, not function declarations
+
+Function declarations are hoisted, which can harm readability.  
+Named expressions are clearer and safer.
+
+---
+
+## 2.2 Wrap IIFEs in parentheses
+
+This clearly shows the structure of the immediately invoked function.
+
+---
+
+## 2.3 Never declare functions inside blocks (`if`, `while`)
+
+Browser behavior is inconsistent. Assign a function to a variable instead.
+
+---
+
+## 2.4 Never name a parameter `arguments`
+
+It shadows the built-in `arguments` object.
+
+---
+
+## 2.5 Use rest parameters (`...args`) instead of `arguments`
+
+Rest parameters are real arrays and more explicit.
+
+---
+
+## 2.6 Use default parameter syntax (e.g., `opts = {}`)
+
+Do not mutate function arguments.
+
+---
+
+## 2.7 Avoid default parameters with side effects
+
+They are confusing and can behave unexpectedly.
+
+---
+
+## 2.8 Place default parameters last
+
+This keeps the function signature predictable.
+
+---
+
+## 2.9 Never use the `Function` constructor
+
+It works like `eval()` and introduces security risks.
+
+---
+
+## 2.10 Follow consistent spacing rules in function signatures
+
+Consistency improves readability.
+
+---
+
+## 2.11 Never mutate or reassign function parameters
+
+It can cause unexpected behavior and debugging problems.
+
+---
+
+## 2.12 Prefer the spread operator (`...`) when calling variadic functions
+
+It is cleaner and safer than `.apply()`.
+
+---
+
+## 2.13 When functions or calls span multiple lines,
+
+Place each argument on its own line with proper indentation and a trailing comma.
+
+---
+
+# Summary
+
+These rules from the Airbnb Guide help keep code consistent and reduce errors.  
+Good variable and function practices make code easier to understand, safer to maintain, and clearer for teamwork.
+
+---
+
+---
+
+# Clean Code: Writing Small, Focused Functions
+
+This section explains why small functions are easier to understand, test, and maintain.  
+I also include my own reflections and a simple refactoring example.
+
+---
+
+## 1. Why is breaking down functions beneficial?
+
+1. **Easier to read**
+
+   - A long function forces the reader to scroll and remember too many details.
+   - A small function focuses on one idea, so it is easier to understand quickly.
+
+2. **Easier to test**
+
+   - When a function does only one job, writing unit tests becomes simple.
+   - You can test each part separately instead of testing a large block of mixed logic.
+
+3. **Easier to reuse**
+
+   - Small functions often become useful tools in other parts of the codebase.
+   - This reduces duplication and improves consistency.
+
+4. **Easier to debug**
+
+   - When something goes wrong, you can check smaller pieces step by step.
+   - This makes the cause of the bug easier to find.
+
+5. **Improves teamwork**
+   - Multiple developers can work on different functions without interfering with each other.
+   - Clear boundaries between functions reduce confusion.
+
+---
+
+## 2. Example of a Long, Hard-to-Read Function
+
+```js
+function processOrder(order) {
+  // validate
+  if (!order || !order.items || order.items.length === 0) {
+    return "Invalid order";
+  }
+
+  // calculate total
+  let total = 0;
+  for (let i = 0; i < order.items.length; i++) {
+    total += order.items[i].price * order.items[i].quantity;
+  }
+
+  // apply discount
+  if (order.user && order.user.isVIP) {
+    total = total * 0.9;
+  }
+
+  // format output
+  return `Order Total: $${total}`;
+}
+```
+
+### Problems:
+
+- Too many responsibilities in one place
+- Harder to test each part
+- Harder to reuse logic in other features
+- New developers need more time to understand it
+
+---
+
+# 3. Refactored Version: Small, Single-Purpose Functions
+
+```js
+function validateOrder(order) {
+  return order && order.items && order.items.length > 0;
+}
+
+function calculateTotal(items) {
+  return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+}
+
+function applyVIPDiscount(total, user) {
+  return user && user.isVIP ? total * 0.9 : total;
+}
+
+function formatTotal(total) {
+  return `Order Total: $${total}`;
+}
+
+function processOrder(order) {
+  if (!validateOrder(order)) {
+    return "Invalid order";
+  }
+
+  let total = calculateTotal(order.items);
+  total = applyVIPDiscount(total, order.user);
+  return formatTotal(total);
+}
+```
+
+---
+
+## 4. How did refactoring improve the structure?
+
+1. **Clear responsibilities**  
+   Each helper function has one clear job (validation, calculation, discount, formatting).
+
+2. **Better readability**  
+   The final `processOrder()` reads like a story:
+
+   - validate → calculate → discount → format
+
+3. **Easier to test**
+
+   - You can write unit tests for each function separately.
+   - This makes debugging much faster.
+
+4. **Easier to extend**
+
+   - If we add new discounts or rules, we only modify small pieces.
+   - The code remains stable and predictable.
+
+5. **More reusable**
+   - Other parts of the app can reuse `calculateTotal()` or `applyVIPDiscount()`.
+
+---
+
+I learned that breaking down long functions is not only good for readability but also improves long-term maintainability. Small, focused functions make the codebase healthier and easier for everyone on the team.
+
+---
+
+---
+
+# Clean Code: Avoiding Code Duplication (DRY Principle)
+
+This section explains why duplicated code is a problem and how refactoring improves maintainability.  
+I also include a simple example and my own reflections.
+
+---
+
+# 1. What were the issues with duplicated code?
+
+1. **Hard to maintain**
+
+   - When the same logic appears in multiple places, you must update every copy.
+   - If you forget one, the system becomes inconsistent and buggy.
+
+2. **Higher chance of errors**
+
+   - A small fix must be repeated many times, which increases the chance of mistakes.
+   - Old duplicated code may behave differently from newer versions.
+
+3. **More code to read**
+
+   - Duplicated blocks make files longer and harder to understand.
+   - New developers need more time to understand what is truly important.
+
+4. **Difficult to test**
+   - Repeated logic means repeated test cases.
+   - If you update a rule, all duplicated sections must be retested.
+
+The core problem is simple: **copying code also copies the responsibility to maintain it**.
+
+---
+
+# 2. Example of Duplicated Code
+
+```js
+function getUserFullName(user) {
+  return user.firstName + " " + user.lastName;
+}
+
+function formatWelcomeMessage(user) {
+  const fullName = user.firstName + " " + user.lastName;
+  return `Welcome back, ${fullName}!`;
+}
+```
+
+### Problems:
+
+- The logic to build the full name appears twice.
+- If the name formatting changes (e.g., middle name, trimming spaces), both places must be updated.
+
+---
+
+# 3. Refactored Code (DRY Version)
+
+```js
+function getUserFullName(user) {
+  return `${user.firstName} ${user.lastName}`;
+}
+
+function formatWelcomeMessage(user) {
+  const fullName = getUserFullName(user);
+  return `Welcome back, ${fullName}!`;
+}
+```
+
+### Improvements:
+
+- The full name logic exists in only one place.
+- Any future update only requires changing one function.
+- The purpose of each function is clearer.
+
+---
+
+# 4. How did refactoring improve maintainability?
+
+1. **Single source of truth**
+
+   - There is now only one function that handles name formatting.
+   - This removes guesswork and reduces human error.
+
+2. **Easier to extend**
+
+   - If the system later needs to support middle names or language-specific formatting, I can update one place.
+
+3. **Cleaner structure**
+
+   - Each function now has one responsibility.
+   - The codebase becomes easier to navigate.
+
+4. **Better teamwork**
+
+   - Other developers can reuse helper functions instead of rewriting code.
+   - This creates a more consistent codebase.
+
+5. **Less testing effort**
+   - Tests only need to cover the shared function.
+   - This reduces repeated test cases and lowers maintenance cost.
+
+---
+
+I learned that eliminating duplication is one of the simplest ways to make code easier to manage in the long term.  
+The DRY principle helps teams move faster and reduces problems caused by inconsistent logic.
+
+---
+
+---
+
+# Clean Code: Avoiding Code Duplication (DRY Principle)
+
+This section explains why duplicated code is a problem and how refactoring improves maintainability.  
+I also include a simple example and my own reflections.
+
+---
+
+## 1. What were the issues with duplicated code?
+
+1. **Hard to maintain**
+
+   - When the same logic appears in multiple places, you must update every copy.
+   - If you forget one, the system becomes inconsistent and buggy.
+
+2. **Higher chance of errors**
+
+   - A small fix must be repeated many times, which increases the chance of mistakes.
+   - Old duplicated code may behave differently from newer versions.
+
+3. **More code to read**
+
+   - Duplicated blocks make files longer and harder to understand.
+   - New developers need more time to understand what is truly important.
+
+4. **Difficult to test**
+   - Repeated logic means repeated test cases.
+   - If you update a rule, all duplicated sections must be retested.
+
+The core problem is simple: **copying code also copies the responsibility to maintain it**.
+
+---
+
+## 2. Example of Duplicated Code
+
+```js
+function getUserFullName(user) {
+  return user.firstName + " " + user.lastName;
+}
+
+function formatWelcomeMessage(user) {
+  const fullName = user.firstName + " " + user.lastName;
+  return `Welcome back, ${fullName}!`;
+}
+```
+
+### Problems:
+
+- The logic to build the full name appears twice.
+- If the name formatting changes (e.g., middle name, trimming spaces), both places must be updated.
+
+---
+
+## 3. Refactored Code (DRY Version)
+
+```js
+function getUserFullName(user) {
+  return `${user.firstName} ${user.lastName}`;
+}
+
+function formatWelcomeMessage(user) {
+  const fullName = getUserFullName(user);
+  return `Welcome back, ${fullName}!`;
+}
+```
+
+### Improvements:
+
+- The full name logic exists in only one place.
+- Any future update only requires changing one function.
+- The purpose of each function is clearer.
+
+---
+
+## 4. How did refactoring improve maintainability?
+
+1. **Single source of truth**
+
+   - There is now only one function that handles name formatting.
+   - This removes guesswork and reduces human error.
+
+2. **Easier to extend**
+
+   - If the system later needs to support middle names or language-specific formatting, I can update one place.
+
+3. **Cleaner structure**
+
+   - Each function now has one responsibility.
+   - The codebase becomes easier to navigate.
+
+4. **Better teamwork**
+
+   - Other developers can reuse helper functions instead of rewriting code.
+   - This creates a more consistent codebase.
+
+5. **Less testing effort**
+   - Tests only need to cover the shared function.
+   - This reduces repeated test cases and lowers maintenance cost.
+
+---
+
+I learned that eliminating duplication is one of the simplest ways to make code easier to manage in the long term.  
+The DRY principle helps teams move faster and reduces problems caused by inconsistent logic.
+
+---
+
+---
+
+# Clean Code: Refactoring Code for Simplicity
+
+This section explains why some code becomes complicated and how refactoring can make it easier to understand and maintain. I also include an example and my own reflections.
+
+---
+
+## 1. What made the original code complex?
+
+1. **Too many nested conditions**
+
+   - Deep `if`/`else` blocks make the logic hard to follow.
+   - Readers must keep track of many possible outcomes.
+
+2. **Mixed responsibilities**
+
+   - A single function handled validation, formatting, and calculation all at once.
+   - This made the function long and hard to read.
+
+3. **Unnecessary steps or variables**
+
+   - Some variables were created but never reused.
+   - Certain steps repeated the same checks more than once.
+
+4. **Over-engineering**
+
+   - The code tried to handle edge cases or “what if” scenarios that may never happen.
+   - This added more noise than value.
+
+5. **Poor naming**
+   - Some variable names did not clearly explain their purpose.
+   - This added cognitive load when reading the code.
+
+---
+
+## 2. Example of Overly Complex Code
+
+```js
+function getDiscountedTotal(cart) {
+  let total = 0;
+  let discount = 0;
+
+  if (cart && cart.items) {
+    for (let i = 0; i < cart.items.length; i++) {
+      const item = cart.items[i];
+      if (item && item.price && item.quantity) {
+        total += item.price * item.quantity;
+      }
+    }
+  }
+
+  if (cart && cart.user) {
+    if (cart.user.role === "VIP") {
+      discount = total * 0.1;
+    } else if (cart.user.role === "SuperVIP") {
+      discount = total * 0.2;
+    } else {
+      discount = 0;
+    }
+  }
+
+  if (cart && cart.user && cart.user.role) {
+    return total - discount;
+  } else {
+    return total;
+  }
+}
+```
+
+### What makes it complex?
+
+- Multiple repeated checks like `cart && cart.user`
+- Deep nesting
+- Many branches for discount logic
+- Hard to reuse or test individual pieces
+
+---
+
+## 3. Refactored Version: Cleaner and Simpler
+
+```js
+function calculateTotal(items) {
+  return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+}
+
+function getDiscount(total, role) {
+  const rates = {
+    VIP: 0.1,
+    SuperVIP: 0.2,
+  };
+  return total * (rates[role] || 0);
+}
+
+function getDiscountedTotal(cart) {
+  if (!cart?.items) return 0;
+
+  const total = calculateTotal(cart.items);
+  const role = cart?.user?.role;
+  const discount = getDiscount(total, role);
+
+  return total - discount;
+}
+```
+
+### Why it’s better:
+
+- Each function has one responsibility.
+- No repeated `cart` checks thanks to optional chaining.
+- Discount rules moved to a lookup object, making them easy to update.
+- Easier to test and extend.
+
+---
+
+## 4. How did refactoring improve it?
+
+1. **Clearer structure**
+
+   - The main function now reads like clear steps: calculate → get discount → return total.
+
+2. **Less duplication**
+
+   - Common logic moved into helper functions.
+
+3. **Easier to maintain**
+
+   - If a new user role is added, I just modify the `rates` object.
+
+4. **Better readability**
+
+   - Shorter functions and simpler control flow reduce mental load.
+
+5. **More reusable**
+
+   - `calculateTotal()` can be used in other parts of the app.
+
+6. **Lower chance of bugs**
+   - Fewer conditions and repeated checks means fewer opportunities for mistakes.
+
+---
+
+I learned that simple code is not about writing fewer characters—it is about making the logic easier to understand at a glance. Refactoring helps remove noise and allows the real intention of the code to become clear.
+
+---
+
+---
+
+# Clean Code: Commenting & Documentation
+
+This section explains when comments are helpful, when they are not, and how to write documentation that makes the code easier to understand.
+
+---
+
+## 1. When should you add comments?
+
+1. **To explain _why_ something is done**
+
+   - If the reason behind a decision is not obvious from the code, a short comment helps future developers understand the intention.
+   - Example: explaining a workaround for a known bug.
+
+2. **To give context that code cannot show**
+
+   - Comments can explain business rules, constraints, or assumptions that come from outside the code.
+
+3. **To describe complex algorithms**
+
+   - Even clean code can benefit from a high-level explanation when the logic is advanced or requires domain knowledge.
+
+4. **To warn about edge cases**
+
+   - If something must not be changed or can break easily, comments help prevent accidental bugs.
+
+5. **To document public functions**
+   - A short description of inputs, outputs, and expected behavior helps people use the function correctly.
+
+---
+
+## 2. When should you avoid comments?
+
+1. **When the comment explains obvious code**
+
+   - Comments like `// add 1 to count` only repeat what the code already shows.
+   - This creates noise and does not add value.
+
+2. **When comments hide bad code**
+
+   - If you feel the need to write a comment because the code is confusing, it's usually a sign that you should **rewrite the code**, not comment on it.
+
+3. **When better naming can solve the problem**
+
+   - Good variable and function names often remove the need for comments.
+
+4. **When comments are used to describe long functions**
+   - Long functions should be refactored, not explained line by line.
+
+---
+
+## 3. Example of Poorly Commented Code
+
+```js
+// loop through
+function p(a) {
+  // total
+  let t = 0;
+
+  // add
+  for (let i = 0; i < a.length; i++) {
+    t = t + a[i];
+  }
+
+  // return
+  return t;
+}
+```
+
+### Why it’s bad:
+
+- Comments repeat the code instead of explaining meaning.
+- Function name `p` and variable `t` give no clue about purpose.
+- Code is readable enough without these comments.
+
+---
+
+## 4. Improved Version with Better Naming and Meaningful Comments
+
+```js
+/**
+ * Calculate the sum of all numbers in an array.
+ * Useful when we need a quick total of user scores or prices.
+ */
+function calculateTotal(values) {
+  let total = 0;
+
+  for (let i = 0; i < values.length; i++) {
+    total += values[i];
+  }
+
+  return total;
+}
+```
+
+### Why this is better:
+
+- Good naming removes the need for unnecessary comments.
+- Only the high-level purpose is documented.
+- More helpful for future developers.
+
+---
+
+## 5. How did this exercise improve my understanding?
+
+1. I learned that comments are most useful when they explain **intent**, not code behavior.
+2. Good naming and simple structure should always come before writing comments.
+3. Comments should support the code, not replace clean design.
+4. Writing documentation made me think more about how others will read my code.
+5. I now understand that fewer comments can actually lead to cleaner code when naming and structure are done well.
+
+---
+
+I learned that the best comments help people understand _why_ the code exists, not what each line does. Clean code should speak for itself, and comments should fill in the gaps only when needed.
+
+---
+
+---
+
+# Clean Code: Writing Unit Tests
+
+This section explains why unit tests are important for clean code, how they support long-term maintainability, and what I learned from writing tests in my own repo.
+
+---
+
+## 1. How do unit tests help keep code clean?
+
+1. **They force clear and simple design**  
+   When a function is hard to test, it usually means the function is too long or does too many things.  
+   Writing tests helped me see which parts of my code needed to be broken into smaller, single-purpose functions.
+
+2. **They catch mistakes early**  
+   Unit tests run every time I update the code. If something breaks, I know immediately.  
+   This reduces debugging time and prevents hidden bugs from going into production.
+
+3. **They document expected behavior**  
+   Tests show how a function is meant to be used—its inputs, outputs, and edge cases.  
+   This acts as a form of “living documentation” that updates automatically.
+
+4. **They help future refactoring**  
+   When tests pass, I feel safe to rewrite or improve code without worrying about breaking something.  
+   This encourages cleaner, more confident refactoring.
+
+5. **They improve teamwork and maintainability**  
+   Other developers can understand the system faster because the tests explain how major functions behave.
+
+---
+
+## 2. What issues did I find while testing?
+
+1. **Naming issues**  
+   Some old function and variable names were too vague.  
+   While writing tests, I had to rename them to understand their purpose more clearly.
+
+2. **Missing edge cases**  
+   I discovered cases I never handled, like empty arrays or null values.  
+   Writing tests forced me to update the code to be more defensive and reliable.
+
+3. **Logic errors that were not obvious**  
+   A function returned the wrong value when the input was slightly different.  
+   The test revealed the mistake immediately.
+
+4. **Functions doing too many things**  
+   A few functions were difficult to test because they handled multiple responsibilities.  
+   I broke them into smaller functions, which improved readability and testability.
+
+5. **Unclear return types**  
+   Some functions behaved differently depending on the input, which made testing confusing.  
+   I refactored them to be more predictable.
+
+---
+
+## 3. Example of a Simple Unit Test (Jest)
+
+```js
+// sum.js
+function sum(a, b) {
+  return a + b;
+}
+module.exports = sum;
+```
+
+```js
+// sum.test.js
+const sum = require("./sum");
+
+test("adds two numbers correctly", () => {
+  expect(sum(2, 3)).toBe(5);
+});
+```
+
+### Why this is clean:
+
+- Clear input and output
+- Easy to understand
+- Shows expected behavior without long explanations
+
+---
+
+## 4. What I learned
+
+1. Good tests make the codebase feel safer and more stable.
+2. Clean code and testing support each other—clean code is easier to test, and tests encourage cleaner code.
+3. Writing tests helped me see my own mistakes and improve code quality.
+4. Unit tests are not just a requirement—they make development faster and more confident.
+
+---
+
+Writing unit tests showed me that clean code is not only about style but also about making sure the code behaves correctly now and in the future.
+
+---

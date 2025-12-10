@@ -1,0 +1,31 @@
+{
+  // --- ESLint 自動修復 ---
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+
+  // --- 只對 JavaScript 套用 Prettier ---
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // --- 只對 TypeScript 套用 Prettier ---
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // --- 保留 Java 專案自己的格式化器（不受 Prettier 影響）---
+  "java.format.settings.url": "eclipse-formatter.xml",
+
+  // --- 讓 VS Code 不顯示 local history ---
+  "files.exclude": {
+    "**/.history": true,
+    "**/.DS_Store": true
+  },
+
+  // --- 搜尋時排除 `.history` ---
+  "search.exclude": {
+    "**/.history": true,
+    "**/.DS_Store": true
+  }
+}
